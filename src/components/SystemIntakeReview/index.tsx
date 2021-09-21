@@ -9,18 +9,16 @@ import {
 } from 'components/shared/DescriptionGroup';
 import contractStatus from 'constants/enums/contractStatus';
 import { yesNoMap } from 'data/common';
-import { SystemIntakeForm } from 'types/systemIntake';
+import { GetSystemIntake_systemIntake as SystemIntake } from 'queries/types/GetSystemIntake';
 import convertBoolToYesNo from 'utils/convertBoolToYesNo';
 import { formatContractDate, formatDate } from 'utils/date';
 
 type SystemIntakeReviewProps = {
-  systemIntake: SystemIntakeForm;
-  now: DateTime;
+  systemIntake: SystemIntake;
 };
 
 export const SystemIntakeReview = ({
-  systemIntake,
-  now
+  systemIntake
 }: SystemIntakeReviewProps) => {
   const { contract } = systemIntake;
 
@@ -56,7 +54,7 @@ export const SystemIntakeReview = ({
               definition={
                 systemIntake.submittedAt
                   ? formatDate(systemIntake.submittedAt)
-                  : now.toLocaleString(DateTime.DATE_MED)
+                  : DateTime.local().toLocaleString(DateTime.DATE_MED)
               }
             />
           </div>

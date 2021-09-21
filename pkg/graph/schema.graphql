@@ -429,9 +429,9 @@ type ContractDate {
 
 type SystemIntakeContract {
   contractor: String
-  endDate: ContractDate
+  endDate: ContractDate!
   hasContract: String
-  startDate: ContractDate
+  startDate: ContractDate!
   vehicle: String
 }
 
@@ -493,17 +493,17 @@ type SystemIntake {
   archivedAt: Time
   businessCase: BusinessCase
   businessNeed: String
-  businessOwner: SystemIntakeBusinessOwner
+  businessOwner: SystemIntakeBusinessOwner!
   businessSolution: String
-  contract: SystemIntakeContract
-  costs: SystemIntakeCosts
+  contract: SystemIntakeContract!
+  costs: SystemIntakeCosts!
   createdAt: Time!
   currentStage: String
   decisionNextSteps: String
   eaCollaborator: String
   eaCollaboratorName: String
   euaUserId: String!
-  fundingSource: SystemIntakeFundingSource
+  fundingSource: SystemIntakeFundingSource!
   governanceTeams: SystemIntakeGovernanceTeam
   grbDate: Time
   grtDate: Time
@@ -517,7 +517,7 @@ type SystemIntake {
   notes: [SystemIntakeNote!]!
   oitSecurityCollaborator: String
   oitSecurityCollaboratorName: String
-  productManager: SystemIntakeProductManager
+  productManager: SystemIntakeProductManager!
   projectAcronym: String
   rejectionReason: String
   requestName: String

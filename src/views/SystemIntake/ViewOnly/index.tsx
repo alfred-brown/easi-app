@@ -4,10 +4,10 @@ import { DateTime } from 'luxon';
 import PageHeading from 'components/PageHeading';
 import PDFExport from 'components/PDFExport';
 import SystemIntakeReview from 'components/SystemIntakeReview';
-import { SystemIntakeForm } from 'types/systemIntake';
+import { GetSystemIntake_systemIntake as SystemIntake } from 'queries/types/GetSystemIntake';
 
 type SystemIntakeViewOnlyProps = {
-  systemIntake: SystemIntakeForm;
+  systemIntake: SystemIntake;
 };
 
 const SystemIntakeView = ({ systemIntake }: SystemIntakeViewOnlyProps) => {
