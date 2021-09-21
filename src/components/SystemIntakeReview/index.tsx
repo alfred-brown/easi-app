@@ -112,7 +112,7 @@ export const SystemIntakeReview = ({
           </div>
           <div>
             <DescriptionTerm term="I have started collaborating with" />
-            {systemIntake.governanceTeams.isPresent ? (
+            {systemIntake.governanceTeams.teams ? (
               systemIntake.governanceTeams.teams.map(team => (
                 <DescriptionDefinition
                   key={`GovernanceTeam-${team.name.split(' ').join('-')}`}
@@ -182,7 +182,10 @@ export const SystemIntakeReview = ({
           <div>
             <DescriptionTerm term="Do the costs for this request exceed what you are currently spending to meet your business need?" />
             <DescriptionDefinition
-              definition={yesNoMap[systemIntake.costs.isExpectingIncrease]}
+              definition={
+                systemIntake.costs.isExpectingIncrease &&
+                yesNoMap[systemIntake.costs.isExpectingIncrease]
+              }
             />
           </div>
           {systemIntake.costs.isExpectingIncrease === 'YES' && (
@@ -205,21 +208,17 @@ export const SystemIntakeReview = ({
           </div>
         </ReviewRow>
         {['HAVE_CONTRACT', 'IN_PROGRESS'].includes(
-          systemIntake.contract.hasContract
+          contract.hasContract || ''
         ) && (
           <>
             <ReviewRow>
               <div>
                 <DescriptionTerm term="Contractor(s)" />
-                <DescriptionDefinition
-                  definition={systemIntake.contract.contractor}
-                />
+                <DescriptionDefinition definition={contract.contractor} />
               </div>
               <div>
                 <DescriptionTerm term="Contract vehicle" />
-                <DescriptionDefinition
-                  definition={systemIntake.contract.vehicle}
-                />
+                <DescriptionDefinition definition={contract.vehicle} />
               </div>
             </ReviewRow>
             <ReviewRow>

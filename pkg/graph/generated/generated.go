@@ -3187,11 +3187,11 @@ type SystemIntakeFundingSource {
 }
 
 type SystemIntakeCollaborator {
-  acronym: String
-  collaborator: String
-  key: String
-  label: String
-  name: String
+  acronym: String!
+  collaborator: String!
+  key: String!
+  label: String!
+  name: String!
 }
 
 type SystemIntakeGovernanceTeam {
@@ -3244,12 +3244,12 @@ type SystemIntake {
   eaCollaboratorName: String
   euaUserId: String!
   fundingSource: SystemIntakeFundingSource!
-  governanceTeams: SystemIntakeGovernanceTeam
+  governanceTeams: SystemIntakeGovernanceTeam!
   grbDate: Time
   grtDate: Time
   grtFeedbacks: [GRTFeedback!]!
   id: UUID!
-  isso: SystemIntakeISSO
+  isso: SystemIntakeISSO!
   lcid: String
   lcidExpiresAt: Time
   lcidScope: String
@@ -11305,11 +11305,14 @@ func (ec *executionContext) _SystemIntake_governanceTeams(ctx context.Context, f
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.SystemIntakeGovernanceTeam)
 	fc.Result = res
-	return ec.marshalOSystemIntakeGovernanceTeam2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeam(ctx, field.Selections, res)
+	return ec.marshalNSystemIntakeGovernanceTeam2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeam(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntake_grbDate(ctx context.Context, field graphql.CollectedField, obj *models.SystemIntake) (ret graphql.Marshaler) {
@@ -11471,11 +11474,14 @@ func (ec *executionContext) _SystemIntake_isso(ctx context.Context, field graphq
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
 	res := resTmp.(*model.SystemIntakeIsso)
 	fc.Result = res
-	return ec.marshalOSystemIntakeISSO2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeIsso(ctx, field.Selections, res)
+	return ec.marshalNSystemIntakeISSO2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeIsso(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntake_lcid(ctx context.Context, field graphql.CollectedField, obj *models.SystemIntake) (ret graphql.Marshaler) {
@@ -12569,11 +12575,14 @@ func (ec *executionContext) _SystemIntakeCollaborator_acronym(ctx context.Contex
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntakeCollaborator_collaborator(ctx context.Context, field graphql.CollectedField, obj *model.SystemIntakeCollaborator) (ret graphql.Marshaler) {
@@ -12601,11 +12610,14 @@ func (ec *executionContext) _SystemIntakeCollaborator_collaborator(ctx context.C
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntakeCollaborator_key(ctx context.Context, field graphql.CollectedField, obj *model.SystemIntakeCollaborator) (ret graphql.Marshaler) {
@@ -12633,11 +12645,14 @@ func (ec *executionContext) _SystemIntakeCollaborator_key(ctx context.Context, f
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntakeCollaborator_label(ctx context.Context, field graphql.CollectedField, obj *model.SystemIntakeCollaborator) (ret graphql.Marshaler) {
@@ -12665,11 +12680,14 @@ func (ec *executionContext) _SystemIntakeCollaborator_label(ctx context.Context,
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntakeCollaborator_name(ctx context.Context, field graphql.CollectedField, obj *model.SystemIntakeCollaborator) (ret graphql.Marshaler) {
@@ -12697,11 +12715,14 @@ func (ec *executionContext) _SystemIntakeCollaborator_name(ctx context.Context, 
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _SystemIntakeContract_contractor(ctx context.Context, field graphql.CollectedField, obj *model.SystemIntakeContract) (ret graphql.Marshaler) {
@@ -18159,6 +18180,9 @@ func (ec *executionContext) _SystemIntake(ctx context.Context, sel ast.Selection
 					}
 				}()
 				res = ec._SystemIntake_governanceTeams(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "grbDate":
@@ -18193,6 +18217,9 @@ func (ec *executionContext) _SystemIntake(ctx context.Context, sel ast.Selection
 					}
 				}()
 				res = ec._SystemIntake_isso(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
 				return res
 			})
 		case "lcid":
@@ -18526,14 +18553,29 @@ func (ec *executionContext) _SystemIntakeCollaborator(ctx context.Context, sel a
 			out.Values[i] = graphql.MarshalString("SystemIntakeCollaborator")
 		case "acronym":
 			out.Values[i] = ec._SystemIntakeCollaborator_acronym(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "collaborator":
 			out.Values[i] = ec._SystemIntakeCollaborator_collaborator(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "key":
 			out.Values[i] = ec._SystemIntakeCollaborator_key(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "label":
 			out.Values[i] = ec._SystemIntakeCollaborator_label(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "name":
 			out.Values[i] = ec._SystemIntakeCollaborator_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -20080,9 +20122,37 @@ func (ec *executionContext) marshalNSystemIntakeFundingSource2ᚖgithubᚗcomᚋ
 	return ec._SystemIntakeFundingSource(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNSystemIntakeGovernanceTeam2githubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeam(ctx context.Context, sel ast.SelectionSet, v model.SystemIntakeGovernanceTeam) graphql.Marshaler {
+	return ec._SystemIntakeGovernanceTeam(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNSystemIntakeGovernanceTeam2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeam(ctx context.Context, sel ast.SelectionSet, v *model.SystemIntakeGovernanceTeam) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._SystemIntakeGovernanceTeam(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNSystemIntakeGovernanceTeamInput2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeamInput(ctx context.Context, v interface{}) (*model.SystemIntakeGovernanceTeamInput, error) {
 	res, err := ec.unmarshalInputSystemIntakeGovernanceTeamInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNSystemIntakeISSO2githubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeIsso(ctx context.Context, sel ast.SelectionSet, v model.SystemIntakeIsso) graphql.Marshaler {
+	return ec._SystemIntakeISSO(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNSystemIntakeISSO2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeIsso(ctx context.Context, sel ast.SelectionSet, v *model.SystemIntakeIsso) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._SystemIntakeISSO(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNSystemIntakeISSOInput2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeISSOInput(ctx context.Context, v interface{}) (*model.SystemIntakeISSOInput, error) {
@@ -21037,20 +21107,6 @@ func (ec *executionContext) unmarshalOSystemIntakeFundingSourceInput2ᚖgithub�
 	}
 	res, err := ec.unmarshalInputSystemIntakeFundingSourceInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOSystemIntakeGovernanceTeam2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeGovernanceTeam(ctx context.Context, sel ast.SelectionSet, v *model.SystemIntakeGovernanceTeam) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._SystemIntakeGovernanceTeam(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalOSystemIntakeISSO2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeIsso(ctx context.Context, sel ast.SelectionSet, v *model.SystemIntakeIsso) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._SystemIntakeISSO(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOSystemIntakeNote2ᚖgithubᚗcomᚋcmsgovᚋeasiᚑappᚋpkgᚋgraphᚋmodelᚐSystemIntakeNote(ctx context.Context, sel ast.SelectionSet, v *model.SystemIntakeNote) graphql.Marshaler {

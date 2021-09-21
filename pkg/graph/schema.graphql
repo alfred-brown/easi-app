@@ -447,11 +447,11 @@ type SystemIntakeFundingSource {
 }
 
 type SystemIntakeCollaborator {
-  acronym: String
-  collaborator: String
-  key: String
-  label: String
-  name: String
+  acronym: String!
+  collaborator: String!
+  key: String!
+  label: String!
+  name: String!
 }
 
 type SystemIntakeGovernanceTeam {
@@ -504,12 +504,12 @@ type SystemIntake {
   eaCollaboratorName: String
   euaUserId: String!
   fundingSource: SystemIntakeFundingSource!
-  governanceTeams: SystemIntakeGovernanceTeam
+  governanceTeams: SystemIntakeGovernanceTeam!
   grbDate: Time
   grtDate: Time
   grtFeedbacks: [GRTFeedback!]!
   id: UUID!
-  isso: SystemIntakeISSO
+  isso: SystemIntakeISSO!
   lcid: String
   lcidExpiresAt: Time
   lcidScope: String

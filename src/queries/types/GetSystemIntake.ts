@@ -53,11 +53,11 @@ export interface GetSystemIntake_systemIntake_grtFeedbacks {
 
 export interface GetSystemIntake_systemIntake_governanceTeams_teams {
   __typename: "SystemIntakeCollaborator";
-  acronym: string | null;
-  collaborator: string | null;
-  key: string | null;
-  label: string | null;
-  name: string | null;
+  acronym: string;
+  collaborator: string;
+  key: string;
+  label: string;
+  name: string;
 }
 
 export interface GetSystemIntake_systemIntake_governanceTeams {
@@ -112,8 +112,8 @@ export interface GetSystemIntake_systemIntake {
   grbDate: Time | null;
   grtDate: Time | null;
   grtFeedbacks: GetSystemIntake_systemIntake_grtFeedbacks[];
-  governanceTeams: GetSystemIntake_systemIntake_governanceTeams | null;
-  isso: GetSystemIntake_systemIntake_isso | null;
+  governanceTeams: GetSystemIntake_systemIntake_governanceTeams;
+  isso: GetSystemIntake_systemIntake_isso;
   fundingSource: GetSystemIntake_systemIntake_fundingSource;
   lcid: string | null;
   lcidExpiresAt: Time | null;
