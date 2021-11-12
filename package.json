@@ -68,7 +68,7 @@
     "redux-saga-routines": "^3.2.2",
     "sass-loader": "10.2.0",
     "typescript": "3.7.5",
-    "uswds": "^2.10.3",
+    "uswds": "^2.12.2",
     "wait-on": "^5.2.1",
     "yup": "^0.32.8"
   },
