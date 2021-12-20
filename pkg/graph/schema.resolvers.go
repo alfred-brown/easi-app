@@ -110,7 +110,8 @@ func (r *accessibilityRequestResolver) TestDates(ctx context.Context, obj *model
 }
 
 func (r *accessibilityRequestResolver) StatusRecord(ctx context.Context, obj *models.AccessibilityRequest) (*models.AccessibilityRequestStatusRecord, error) {
-	return r.store.FetchLatestAccessibilityRequestStatusRecordByRequestID(ctx, obj.ID)
+	return r.statusRecordLoader.Load(obj.ID)
+	// return r.store.FetchLatestAccessibilityRequestStatusRecordByRequestID(ctx, obj.ID)
 }
 
 func (r *accessibilityRequestResolver) Notes(ctx context.Context, obj *models.AccessibilityRequest) ([]*models.AccessibilityRequestNote, error) {

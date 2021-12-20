@@ -2,13 +2,16 @@ package storage
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 
 	"go.uber.org/zap"
 
 	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/cmsgov/easi-app/pkg/appcontext"
+	"github.com/cmsgov/easi-app/pkg/apperrors"
 	"github.com/cmsgov/easi-app/pkg/models"
 )
 
@@ -60,4 +63,28 @@ func (s *Store) FetchLatestAccessibilityRequestStatusRecordByRequestID(ctx conte
 		return nil, err
 	}
 	return &statusRecord, nil
+}
+
+// FetchLatestAccessibilityRequestStatusRecordsForMultipleRequests fetches status records for all given accessibility requests
+func (s *Store) FetchLatestAccessibilityRequestStatusRecordsForMultipleRequests( /*ctx context.Context, */ ids []uuid.UUID) ([]models.AccessibilityRequestStatusRecord, error) {
+	var statusRecords []models.AccessibilityRequestStatusRecord
+
+	// appcontext.ZLogger(ctx).Error("Fetching status records")
+
+	// TODO should really group by ID and return latest record for each ID
+	query, args, _ := sqlx.In("SELECT * FROM accessibility_request_status_records WHERE request_id IN (?)", ids)
+	query = s.db.Rebind(query)
+	err := s.db.Select(&statusRecords, query, args...)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return statusRecords, nil
+		}
+		// appcontext.ZLogger(ctx).Error("Failed to fetch specified accessibility request status records", zap.Error(err))
+		return nil, &apperrors.QueryError{
+			Err:       err,
+			Operation: apperrors.QueryFetch,
+		}
+	}
+
+	return statusRecords, nil
 }

@@ -31,6 +31,7 @@ import (
 	"github.com/cmsgov/easi-app/pkg/email"
 	"github.com/cmsgov/easi-app/pkg/flags"
 	"github.com/cmsgov/easi-app/pkg/graph"
+	"github.com/cmsgov/easi-app/pkg/graph/dataloaders"
 	"github.com/cmsgov/easi-app/pkg/graph/generated"
 	"github.com/cmsgov/easi-app/pkg/graph/model"
 	"github.com/cmsgov/easi-app/pkg/handlers"
@@ -251,6 +252,7 @@ func (s *Server) routes(
 		&emailClient,
 		ldClient,
 		coreClient,
+		dataloaders.NewAccessibilityRequestStatusRecordLoader(*store),
 	)
 	gqlDirectives := generated.DirectiveRoot{HasRole: func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error) {
 		hasRole, err := services.HasRole(ctx, role)

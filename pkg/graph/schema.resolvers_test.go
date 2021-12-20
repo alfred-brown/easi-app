@@ -24,7 +24,7 @@ import (
 	"github.com/cmsgov/easi-app/pkg/appconfig"
 	cedarcore "github.com/cmsgov/easi-app/pkg/cedar/core"
 	"github.com/cmsgov/easi-app/pkg/email"
-	"github.com/cmsgov/easi-app/pkg/graph/generated"
+	generated "github.com/cmsgov/easi-app/pkg/graph/generated"
 	"github.com/cmsgov/easi-app/pkg/graph/model"
 	"github.com/cmsgov/easi-app/pkg/local"
 	"github.com/cmsgov/easi-app/pkg/models"
@@ -194,7 +194,7 @@ func TestGraphQLTestSuite(t *testing.T) {
 		emailClient.SendSystemIntakeReviewEmail,
 	)
 
-	resolver := NewResolver(store, resolverService, &s3Client, &emailClient, ldClient, cedarCoreClient)
+	resolver := NewResolver(store, resolverService, &s3Client, &emailClient, ldClient, cedarCoreClient, nil)
 	schema := generated.NewExecutableSchema(generated.Config{Resolvers: resolver, Directives: directives})
 	graphQLClient := client.New(handler.NewDefaultServer(schema))
 

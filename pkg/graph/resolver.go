@@ -8,6 +8,7 @@ import (
 
 	cedarcore "github.com/cmsgov/easi-app/pkg/cedar/core"
 	"github.com/cmsgov/easi-app/pkg/email"
+	"github.com/cmsgov/easi-app/pkg/graph/generated/dataloaders"
 	"github.com/cmsgov/easi-app/pkg/models"
 	"github.com/cmsgov/easi-app/pkg/storage"
 	"github.com/cmsgov/easi-app/pkg/upload"
@@ -23,12 +24,13 @@ import (
 
 // Resolver is a resolver.
 type Resolver struct {
-	store           *storage.Store
-	service         ResolverService
-	s3Client        *upload.S3Client
-	emailClient     *email.Client
-	ldClient        *ldclient.LDClient
-	cedarCoreClient *cedarcore.Client
+	store              *storage.Store
+	service            ResolverService
+	s3Client           *upload.S3Client
+	emailClient        *email.Client
+	ldClient           *ldclient.LDClient
+	cedarCoreClient    *cedarcore.Client
+	statusRecordLoader *dataloaders.AccessibilityRequestStatusRecordLoader // need to inject dataloaders as dependency, rather than recreating on each request
 }
 
 // ResolverService holds service methods for use in resolvers
@@ -51,6 +53,7 @@ func NewResolver(
 	emailClient *email.Client,
 	ldClient *ldclient.LDClient,
 	cedarCoreClient *cedarcore.Client,
+	statusRecordLoader *dataloaders.AccessibilityRequestStatusRecordLoader,
 ) *Resolver {
-	return &Resolver{store: store, service: service, s3Client: s3Client, emailClient: emailClient, ldClient: ldClient, cedarCoreClient: cedarCoreClient}
+	return &Resolver{store: store, service: service, s3Client: s3Client, emailClient: emailClient, ldClient: ldClient, cedarCoreClient: cedarCoreClient, statusRecordLoader: statusRecordLoader}
 }
