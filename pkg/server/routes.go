@@ -20,6 +20,7 @@ import (
 	_ "github.com/lib/pq" // pq is required to get the postgres driver into sqlx
 	"go.uber.org/zap"
 
+	"github.com/cmsgov/easi-app/pkg/actionpublisher"
 	"github.com/cmsgov/easi-app/pkg/appconfig"
 	"github.com/cmsgov/easi-app/pkg/appcontext"
 	"github.com/cmsgov/easi-app/pkg/appses"
@@ -165,6 +166,11 @@ func (s *Server) routes(
 	if storeErr != nil {
 		s.logger.Fatal("Failed to create store", zap.Error(storeErr))
 	}
+
+	//Create Action Publisher
+	ap := actionpublisher.NewActionPublisher(store)
+	//start publisher GoRoutine thread
+	ap.Start()
 
 	serviceConfig := services.NewConfig(s.logger, ldClient)
 
