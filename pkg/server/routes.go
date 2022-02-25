@@ -168,7 +168,11 @@ func (s *Server) routes(
 	}
 
 	//Create Action Publisher
-	ap := actionpublisher.NewActionPublisher(store)
+	ap, apErr := actionpublisher.NewActionPublisher(appcontext.WithLogger(context.Background(), s.logger), store, emailClient)
+	s.logger.Info("Made the action publisher")
+	if apErr != nil {
+		s.logger.Fatal("Failed to create the action publisher", zap.Error(apErr))
+	}
 	//start publisher GoRoutine thread
 	ap.Start()
 

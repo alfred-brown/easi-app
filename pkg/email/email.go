@@ -190,3 +190,10 @@ func (c Client) SendTestEmail(ctx context.Context) error {
 	testToAddress := models.NewEmailAddress("success@simulator.amazonses.com")
 	return c.sender.Send(ctx, testToAddress, nil, "test", "test")
 }
+
+// SendLCIDExpiringEMAIL  sends an email to let users know that the LCID will be expiring
+func (c Client) SendLCIDExpiringEMAIL(ctx context.Context, toAddress string, subject string, body string) error {
+	toAddressM := models.NewEmailAddress(toAddress)
+	return c.sender.Send(ctx, toAddressM, nil, subject, body)
+	//TODO if adopted, get email template input from UX
+}

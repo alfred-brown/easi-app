@@ -4,14 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"fmt"
 
-	//"github.com/google/uuid"
-	//"github.com/jmoiron/sqlx"
-	//"go.uber.org/zap"
-
-	"github.com/cmsgov/easi-app/pkg/appcontext"
-	"github.com/cmsgov/easi-app/pkg/apperrors"
 	"github.com/cmsgov/easi-app/pkg/models"
 )
 
@@ -35,12 +28,16 @@ func (s *Store) FetchNextScheduledAction(ctx context.Context) (*models.Scheduled
 	//TODO look up this library again... We would expect that there aren't any rows sometimes,
 
 	if err != nil {
-		appcontext.ZLogger(ctx).Error(
-			fmt.Sprintf("Failed to fetch publication entries %s", err),
-		)
+		// appcontext.ZLogger(ctx).Error(
+		// 	fmt.Sprintf("Error Fetching scheduled action entry %s", err),
+		// )
 		if errors.Is(err, sql.ErrNoRows) {
 			//TODO, it's ok to have null here, verify this
-			return nil, &apperrors.ResourceNotFoundError{Err: err, Resource: models.ScheduledAction{}}
+
+			//appcontext.ZLogger(ctx).Error("Failed to fetch scheduled Actions, because there are no rows", zap.Error(err))
+
+			//return nil, &apperrors.ResourceNotFoundError{Err: err, Resource: models.ScheduledAction{}}
+			return nil, nil
 		}
 		return nil, err
 	}

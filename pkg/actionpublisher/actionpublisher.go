@@ -2,33 +2,47 @@ package actionpublisher
 
 import (
 	"context"
+	"fmt"
 
 	"time"
 
+	"github.com/cmsgov/easi-app/pkg/appcontext"
+	"github.com/cmsgov/easi-app/pkg/email"
+
 	"github.com/cmsgov/easi-app/pkg/models"
 	"github.com/cmsgov/easi-app/pkg/storage"
+
+	"go.uber.org/zap"
 )
 
 //ActionPublisher is the task that checks for timed actions to be taken, and take them when appropriate
 type ActionPublisher struct {
 	store           *storage.Store
+	context         context.Context
+	emailClient     email.Client //TODO should this be a reference?
 	exitChan        chan bool
 	scheduledAction *models.ScheduledAction
 }
 
-const jobCheckTime = 15
+const jobCheckTime = 1
 const errSleepTime = 1
 
 //NewActionPublisher creates an instance of an ActionPublisher with reference to a store
-func NewActionPublisher(store *storage.Store) ActionPublisher {
+func NewActionPublisher(context context.Context, store *storage.Store, emailClient email.Client) (ActionPublisher, error) {
 	ap := ActionPublisher{}
 	ap.store = store
+	ap.context = context
+	ap.emailClient = emailClient
 	ap.exitChan = make(chan bool)
-	return ap
+	appcontext.ZLogger(context).Info("actionPublisherCreated")
+	//ap.context
+
+	return ap, nil
 }
 
 //Start initiates the ActionPublisers main loop
 func (ap *ActionPublisher) Start() {
+	//return
 
 	go ap.apLoop()
 
@@ -46,30 +60,35 @@ func (ap *ActionPublisher) apLoop() {
 		case <-ap.exitChan:
 			return
 		default:
-			ap.checkForJob()
+			jobErr := ap.checkForJob()
+			if jobErr != nil {
+				appcontext.ZLogger(ap.context).Error("issue finding job", zap.Error(jobErr))
+			}
 
 		}
 
 	}
 }
 
-func (ap *ActionPublisher) checkForJob() {
-	sA, err := ap.store.FetchNextScheduledAction(context.Background())
+func (ap *ActionPublisher) checkForJob() error {
+	sA, err := ap.store.FetchNextScheduledAction(ap.context)
 
 	// if there is an error and the action was retrieved, we will want to update the status of hte scheduledaCtion
 	if err != nil {
 		time.Sleep(errSleepTime * time.Minute)
-		return
+		return err
 	}
 	if sA != nil {
 		ap.scheduledAction = sA
 		sA.CurrentAttempts++
 		//todo, do something with event data here, either generic dictionary structure, or let each event know the format. Cannot change if like this.
-		_ = ap.publishAction()
-		return
+		err = ap.publishAction()
+		return err
 	}
+	appcontext.ZLogger(ap.context).Info(fmt.Sprintf("There are no scheduled actions. Sleeping for %d minutes", jobCheckTime))
 
 	time.Sleep(jobCheckTime * time.Minute)
+	return nil
 
 }
 
@@ -80,6 +99,7 @@ func (ap *ActionPublisher) publishAction() error {
 
 	switch ap.scheduledAction.ActionType {
 	case "LCID_Expiring":
+		appcontext.ZLogger(ap.context).Info(fmt.Sprintf("Publishing new ScheduledAction: %s, %s", ap.scheduledAction.ActionType, ap.scheduledAction.ActionData))
 		err = ap.publishLCIDExpiringAction()
 
 	default:
@@ -95,6 +115,24 @@ func (ap *ActionPublisher) publishAction() error {
 }
 
 func (ap *ActionPublisher) publishLCIDExpiringAction() error {
+
+	// emailAddress := "steven.wade@oddball.io"
+	emailAddress := "success@simulator.amazonses.com"
+	//TODO, is there a better way to get / repreent the data in the dictionary
+
+	// emailAddress := fmt.Sprintf("%v", ap.scheduledAction.ActionData["emailTo"])
+	emailSubject := "LCID EXPIRING"
+
+	// emailBody := ap.scheduledAction.ActionData
+	emailBody := " A bunch of good information"
+	appcontext.ZLogger(ap.context).Info(fmt.Sprintf("Looking at action data: %s, %s", ap.scheduledAction.ActionType, ap.scheduledAction.ActionData))
+
+	emailErr := ap.emailClient.SendLCIDExpiringEMAIL(ap.context, emailAddress, emailSubject, emailBody)
+
+	if emailErr != nil {
+		return emailErr
+	}
+
 	//TODO
 	/*
 		1. Take action based on amount of time to come
@@ -110,12 +148,15 @@ func (ap *ActionPublisher) publishLCIDExpiringAction() error {
 func (ap *ActionPublisher) setActionToComplete() error {
 
 	ap.scheduledAction.Status = "complete"
-	ap.scheduledAction.LastSuccessTime = time.Now()
+	successTime := time.Now()
+	ap.scheduledAction.LastSuccessTime = &successTime
+	// ap.scheduledAction.LastSuccessTime = *time.Now()
 	//ap.store.UpdateScheduledAction(context.Background(), ap.scheduledAction)
 
 	if ap.scheduledAction.Recurring {
-		//TODO polish this
-		ap.scheduledAction.ScheduledTime = time.Now().AddDate(0, 0, int(ap.scheduledAction.DaysToNext))
+		//TODO polish this. We could either just at this point insert another record and consider this is done? Or just update it.
+		scheduledT := time.Now().AddDate(0, 0, int(ap.scheduledAction.DaysToNext))
+		ap.scheduledAction.ScheduledTime = &scheduledT
 		ap.scheduledAction.CurrentAttempts = 0
 
 	}
