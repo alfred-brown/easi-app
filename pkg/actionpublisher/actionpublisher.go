@@ -103,6 +103,7 @@ func (ap *ActionPublisher) publishAction() error {
 		err = ap.publishLCIDExpiringAction()
 
 	default:
+		ap.scheduledAction.Note = "no action defined for this actionType"
 		err = ap.setActionToFailed()
 
 	}
@@ -117,7 +118,8 @@ func (ap *ActionPublisher) publishAction() error {
 func (ap *ActionPublisher) publishLCIDExpiringAction() error {
 
 	// emailAddress := "steven.wade@oddball.io"
-	emailAddress := "success@simulator.amazonses.com"
+	// emailAddress := "success@simulator.amazonses.com"
+	emailAddress := ap.scheduledAction.ActionData["emailTo"].(string)
 	//TODO, is there a better way to get / repreent the data in the dictionary
 
 	// emailAddress := fmt.Sprintf("%v", ap.scheduledAction.ActionData["emailTo"])
@@ -125,7 +127,7 @@ func (ap *ActionPublisher) publishLCIDExpiringAction() error {
 
 	// emailBody := ap.scheduledAction.ActionData
 	emailBody := " A bunch of good information"
-	appcontext.ZLogger(ap.context).Info(fmt.Sprintf("Looking at action data: %s, %s", ap.scheduledAction.ActionType, ap.scheduledAction.ActionData))
+	appcontext.ZLogger(ap.context).Info(fmt.Sprintf("Looking at action data. Found email %s %s, %s", emailAddress, ap.scheduledAction.ActionType, ap.scheduledAction.ActionData))
 
 	emailErr := ap.emailClient.SendLCIDExpiringEMAIL(ap.context, emailAddress, emailSubject, emailBody)
 
@@ -142,6 +144,7 @@ func (ap *ActionPublisher) publishLCIDExpiringAction() error {
 	//ap.store.
 
 	//_,err :=
+	ap.scheduledAction.Note = "action completed"
 	err := ap.setActionToComplete()
 	return err
 }

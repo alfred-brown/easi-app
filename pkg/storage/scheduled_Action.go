@@ -5,19 +5,22 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/cmsgov/easi-app/pkg/appcontext"
 	"github.com/cmsgov/easi-app/pkg/models"
+
+	"go.uber.org/zap"
 )
 
 //FetchNextScheduledAction Gets the next scheduledAction from the DB if there is one to take action on
 func (s *Store) FetchNextScheduledAction(ctx context.Context) (*models.ScheduledAction, error) {
 
 	publicationEntry := models.ScheduledAction{}
-	//TODO, adjust the SQL, or even beter, can we make this a stored procedure.
 	const SQL = ` 
 
 	SELECT * FROM scheduled_action
 
 	WHERE scheduled_action_status in ( 'ready','retry')
+	AND scheduled_date < CURRENT_TIMESTAMP
 	ORDER BY scheduled_date ASC, updated_at DESC
 	
 	LIMIT 1
@@ -41,6 +44,12 @@ func (s *Store) FetchNextScheduledAction(ctx context.Context) (*models.Scheduled
 		}
 		return nil, err
 	}
+	publicationEntry.Status = "publishing"
+	upErr := s.UpdateScheduledAction(ctx, &publicationEntry)
+	if upErr != nil {
+
+		appcontext.ZLogger(ctx).Fatal("Error updating scheduled action", zap.Error(upErr))
+	}
 
 	return &publicationEntry, nil
 
@@ -62,7 +71,8 @@ func (s *Store) UpdateScheduledAction(ctx context.Context, scheduledAction *mode
 		last_success_at= :last_success_at,
 		scheduled_action_status= :scheduled_action_status,
 		current_attempts = :current_attempts,
-		max_attempts = :max_attempts
+		max_attempts = :max_attempts,
+		note = :note
 		
 	WHERE id = :id
 	

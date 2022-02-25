@@ -12,5 +12,6 @@ CREATE TABLE public.scheduled_action
     current_attempts integer NOT NULL DEFAULT 0,
     max_attempts integer NOT NULL DEFAULT 5,
     scheduled_action_status text COLLATE pg_catalog."default" NOT NULL DEFAULT 'ready'::text,
+    note text COLLATE pg_catalog."default" DEFAULT 'new scheduled action'::text,
     CONSTRAINT scheduled_action_pkey PRIMARY KEY (id)
 )
