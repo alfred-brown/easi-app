@@ -27,6 +27,7 @@ go-coverage.*
 .idea
 .envrc.local
 .eslintcache
+.eslintrc
 .tool-versions
 
 
