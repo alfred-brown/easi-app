@@ -16,6 +16,7 @@ Evaluate the current deployment method.:
 
 * Concourse
 * GITHUB ACTIONS
+* Travis CI 
 
 ## Decision Outcome
 
@@ -35,22 +36,25 @@ Evaluate the current deployment method.:
 
 ### Concourse
 
-* `+` Pipeline-based CI that can do version control of files and applications 
+* `+` Pipeline-based CI that can do version control of files and applications (Making it possible to Rollback to a previous git commit for applicaiton deployments)
 * `+` Built in intergration with DevOps tools(Github, AWS, Vault)
 * `+` 
 * `-` Requires completely new pipeline builds and workflow built from strach 
+* `-` Lacking variable mangement system 
+* `-` Requires (self-hosted) building a container/server to service concourse
+
 * *[...]* <!-- numbers of pros and cons can vary -->
 
-### *[alternative 2]*
+### Github actions
+
+* `+` Many pre-built actions making github actions easy and flexible
+* `+` Built-in varible mangement 
+* `-`  
+* *[...]* <!-- numbers of pros and cons can vary -->
+
+### Travis CI 
 
 * `+` *[argument 1 pro]*
 * `+` *[argument 2 pro]*
-* `-` *[argument 1 con]*
-* *[...]* <!-- numbers of pros and cons can vary -->
-
-### *[alternative 3]*
-
-* `+` *[argument 1 pro]*
-* `+` *[argument 2 pro]*
-* `-` *[argument 1 con]*
+* `-` Paid solution
 * *[...]* <!-- numbers of pros and cons can vary -->
