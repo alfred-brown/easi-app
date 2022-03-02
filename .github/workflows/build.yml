@@ -21,6 +21,7 @@ env:
 
 jobs:
   anti_virus:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     container:
       image: clamav/clamav:0.104.0
@@ -39,6 +40,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   pre_deps:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -85,6 +87,7 @@ jobs:
 
   lint:
     needs: pre_deps
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -136,6 +139,7 @@ jobs:
   # Runs TypeScript typechecker on frontend codebase; reports any type errors as a comment on a PR
   # For now, doesn't fail the build
   client_typecheck:
+    concurrency: ci-${{ github.ref }}
     needs: lint
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -200,6 +204,7 @@ jobs:
             });
 
   client_test:
+    concurrency: ci-${{ github.ref }}
     needs: pre_deps
     runs-on: ubuntu-latest
     steps:
@@ -231,6 +236,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   storybook_build:
+    concurrency: ci-${{ github.ref }}
     needs: pre_deps
     runs-on: ubuntu-latest
     steps:
@@ -269,6 +275,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   build_db_migrate_image:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -302,6 +309,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   server_test:
+    concurrency: ci-${{ github.ref }}
     needs: [ pre_deps, build_db_migrate_image ]
     runs-on: ubuntu-latest
     steps:
@@ -382,6 +390,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   build_server_image:
+    concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -420,6 +429,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   e2e_tests:
+    concurrency: ci-${{ github.ref }}
     needs: [ pre_deps, build_db_migrate_image, build_server_image ]
     runs-on: ubuntu-latest
     steps:
@@ -501,6 +511,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_dev:
+    concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
     needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
     runs-on: ubuntu-latest
@@ -571,6 +582,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_impl:
+    concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: deploy_dev
     runs-on: ubuntu-latest
@@ -641,6 +653,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_prod:
+    concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: deploy_impl
     runs-on: ubuntu-latest
@@ -711,6 +724,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_storybook_dev:
+    concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: storybook_build
     runs-on: ubuntu-latest
