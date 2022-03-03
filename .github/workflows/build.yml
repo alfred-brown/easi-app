@@ -3,10 +3,10 @@ name: build
 on:
   push:
     branches:
-      - concurrent_deployments
+      - master
   pull_request:
     branches:
-      - concurrent_deployments
+      - master
 
 env:
   EASI_APP_NODE_VERSION: '12.22.1'
