@@ -259,7 +259,8 @@ jobs:
         run: |
           ./scripts/github-action-announce-broken-branch
 
-   storybook_build:
+
+  storybook_build:
     #needs: pre_deps
     runs-on: ubuntu-latest
     steps:
