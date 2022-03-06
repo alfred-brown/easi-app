@@ -168,3 +168,132 @@ jobs:
         run: |
           ./scripts/github-action-announce-broken-branch
 
+  lint:
+    #needs: pre_deps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up node
+        uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+        with:
+          node-version: ${{ env.EASI_APP_NODE_VERSION }}
+      - name: Set up go
+        uses: actions/setup-go@bfdd3570ce990073878bf10f6b2d79082de49492
+        with:
+          go-version: ${{ env.EASI_APP_GO_VERSION }}
+      - name: Set up python
+        uses: actions/setup-python@7f80679172b057fc5e90d70d197929d454754a5a
+        with:
+          python-version: '3.9'
+      - name: Configure go cache
+        uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed
+        with:
+          path: |
+            ~/go/pkg/mod
+          key: v1-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            v1-go-
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Configure yarn cache
+        uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ./node_modules
+          key: v1-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-
+      # go-swagger is used for pre-commit hooks
+      - name: Install go-swagger
+        id: install-go-swagger
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https gnupg curl
+          curl -1sLf 'https://dl.cloudsmith.io/public/go-swagger/go-swagger/gpg.2F8CB673971B5C9E.key' | sudo apt-key add -
+          curl -1sLf 'https://dl.cloudsmith.io/public/go-swagger/go-swagger/config.deb.txt?distro=debian&codename=any-version' | sudo tee /etc/apt/sources.list.d/go-swagger-go-swagger.list
+          sudo apt-get update
+          sudo apt-get install -y swagger
+      - name: Pre-commit checks
+        uses: pre-commit/action@9b88afc9cd57fd75b655d5c71bd38146d07135fe
+        with:
+          extra_args: --all-files
+      - name: Announce failure
+        if: ${{ failure() }}
+        run: |
+          ./scripts/github-action-announce-broken-branch
+
+  client_test:
+    #needs: pre_deps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up node
+        uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+        with:
+          node-version: ${{ env.EASI_APP_NODE_VERSION }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Configure yarn cache
+        uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ./node_modules
+          key: v1-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-
+      - run: yarn test:coverage
+      - name: Announce failure
+        if: ${{ failure() }}
+        run: |
+          ./scripts/github-action-announce-broken-branch
+
+   storybook_build:
+    #needs: pre_deps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up node
+        uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a
+        with:
+          node-version: ${{ env.EASI_APP_NODE_VERSION }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Configure yarn cache
+        uses: actions/cache@937d24475381cd9c75ae6db12cb4e79714b926ed
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ./node_modules
+          key: v1-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            v1-yarn-
+      - run: yarn run build-storybook
+      - name: Upload storybook artifact
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: actions/upload-artifact@82c141cc518b40d92cc801eee768e7aafc9c2fa2
+        with:
+          name: storybook-build
+          path: storybook-static
+          retention-days: 1
+      - name: Announce failure
+        if: ${{ failure() }}
+        run: |
+          ./scripts/github-action-announce-broken-branch
+
