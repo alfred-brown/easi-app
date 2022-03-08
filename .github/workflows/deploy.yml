@@ -92,7 +92,6 @@ jobs:
   deploy_impl:
     needs: deploy_dev
     if: ${{ github.ref == 'refs/heads/master' }}
-    needs: deploy_dev
     runs-on: ubuntu-latest
     environment: impl
     env:
@@ -163,7 +162,6 @@ jobs:
   deploy_prod:
     needs: deploy_impl
     if: ${{ github.ref == 'refs/heads/master' }}
-    needs: deploy_impl
     runs-on: ubuntu-latest
     environment: prod
     env:
