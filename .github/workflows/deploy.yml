@@ -19,6 +19,7 @@ jobs:
     needs: Build
 
   deploy_dev: 
+    needs: Server_Test
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
     # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
     runs-on: ubuntu-latest
@@ -89,6 +90,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_impl:
+    needs: deploy_dev
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: deploy_dev
     runs-on: ubuntu-latest
@@ -159,6 +161,7 @@ jobs:
           ./scripts/github-action-announce-broken-branch
 
   deploy_prod:
+    needs: deploy_impl
     if: ${{ github.ref == 'refs/heads/master' }}
     needs: deploy_impl
     runs-on: ubuntu-latest
