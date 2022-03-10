@@ -8,16 +8,6 @@ on:
     branches:  
       - master 
 
-  workflow_dispatch:
-    inputs: 
-      job:
-        description: 'run'
-        required: false 
-        default: 'rollback_prod'
-      job:
-        description: 'run'
-        required: false 
-        default: 'deploy_dev' 
 
 
 
