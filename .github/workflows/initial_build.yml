@@ -4,6 +4,8 @@ name: Initial building of images
 
 on: 
   workflow_call:
+  workflow_dispatch:
+    
     
 
 jobs: 

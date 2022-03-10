@@ -12,7 +12,7 @@ on:
     inputs: 
       job:
         description: 'run'
-        required: true
+        required: false 
         default: 'rollback_prod'
 
 
