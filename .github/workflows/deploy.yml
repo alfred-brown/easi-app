@@ -10,7 +10,7 @@ on:
 
   workflow_dispatch:
     inputs: 
-      jobs:
+      job:
         description: 'run'
         required: true
         default: 'rollback_prod'
@@ -246,6 +246,8 @@ jobs:
     env:
       APP_ENV: prod
     steps:
+      - name: ${{ github.event.inputs.job == 'rollback_prod' }}
+        run: echo "${{ github.event.inputs.job }} triggered!"
       - name: Check out code
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
