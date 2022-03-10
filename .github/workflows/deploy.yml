@@ -8,6 +8,14 @@ on:
     branches:  
       - master 
 
+  workflow_dispatch:
+    inputs: 
+      jobs:
+        description: 'run'
+        required: true
+        default: 'rollback_prod'
+
+
 
 
 jobs:
