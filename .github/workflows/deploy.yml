@@ -21,12 +21,15 @@ jobs:
     needs: Build
 
   deploy_dev: 
+    strategy:
+      matrix:
+        env: [dev, prod, impl]
     needs: Server_Test
     concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
     # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ matrix.env }}
     env:
       APP_ENV: dev
     steps:
