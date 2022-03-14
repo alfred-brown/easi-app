@@ -46,7 +46,7 @@ jobs:
     env:
       APP_ENV: ${{ matrix.env }}
       dev: ${{ matrix.dev }}
-      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_$dev }}
+      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
     steps:
       - name: Check out code
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
