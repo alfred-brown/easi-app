@@ -23,6 +23,11 @@ jobs:
       matrix:
         env: [dev, prod, impl]
         dev: [9, 8, 7]
+        exclude: 
+          - env: dev  
+            dev: 8 
+          - env: dev 
+            dev: 7 
     needs: Server_Test
     concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
@@ -40,5 +45,5 @@ jobs:
       - run: | 
           echo $APP_ENV
           echo $dev
-          
+
 
