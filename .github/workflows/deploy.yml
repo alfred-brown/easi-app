@@ -28,6 +28,15 @@ jobs:
             dev: 8 
           - env: dev 
             dev: 7 
+          - env: prod
+            dev: 9 
+          - env: prod 
+            dev: 8 
+          - env: impl 
+            dev: 9 
+          - env: impl 
+            dev: 7 
+          
     needs: Server_Test
     concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
