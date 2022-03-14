@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         env: [dev, prod, impl]
+        dev: [9, 8, 7]
     needs: Server_Test
     concurrency: ci-${{ github.ref }}
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
@@ -30,6 +31,7 @@ jobs:
     environment: ${{ matrix.env }}
     env:
       APP_ENV: ${{ matrix.env }}
+      dev: ${{ matrix.dev }}
     steps:
       - name: Check out code
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
@@ -37,4 +39,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: | 
           echo $APP_ENV
+          echo $dev
+          
 
