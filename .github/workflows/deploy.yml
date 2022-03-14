@@ -52,7 +52,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: | 
-          echo $APP_ENV
-          echo $dev
+          echo $APP_ENV ; echo $dev 
 
 
