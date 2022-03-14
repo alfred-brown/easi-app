@@ -21,7 +21,7 @@ jobs:
   deploy_dev: 
     strategy:
       matrix:
-        env: [dev, impl, prod]
+        env: [DEV, impl, prod]
         dev: [9, 8, 7]
         exclude: 
           - env: dev  
@@ -46,7 +46,7 @@ jobs:
     env:
       APP_ENV: ${{ matrix.env }}
       dev: ${{ matrix.dev }}
-      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_${{ matrix.dev }} }}
+      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_$dev }}
     steps:
       - name: Check out code
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
