@@ -12,6 +12,10 @@ on:
 jobs:
   Build: 
     uses: ./.github/workflows/initial_build.yml 
+    with: 
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
 
   Server_Test: 
     uses: ./.github/workflows/server_test.yml 
