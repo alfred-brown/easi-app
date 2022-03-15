@@ -55,20 +55,6 @@ jobs:
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      
-
-  client_typecheck:
-    needs: lint
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    permissions:
-      pull-requests: write
-      issues: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.3.4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
   deploy_storybook_dev:
     if: ${{ github.ref == 'refs/heads/master' }}
