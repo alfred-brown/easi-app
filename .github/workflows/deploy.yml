@@ -12,7 +12,7 @@ on:
 jobs:
   Build: 
     uses: ./.github/workflows/initial_build.yml 
-    with: 
+    secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
