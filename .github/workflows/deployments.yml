@@ -6,10 +6,10 @@ on:
       env: 
         required: true
         type: string 
-      lambda_verions: 
+      lambda_verion: 
         required: true
         type: string
-        
+
 jobs: 
   deploy_dev:         
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
