@@ -1,0 +1,29 @@
+name: Deployments 
+
+on: 
+  workflow_call:
+    inputs: 
+      env: 
+        required: true
+        type: string 
+      lambda_verions: 
+        required: true
+        type: string
+        
+jobs: 
+  deploy_dev:         
+    if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
+    # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env }}
+    env:
+      APP_ENV: ${{ inputs.env}}
+      LAMBDA_VERISON: ${{ inputs.lambda_version }}
+      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: | 
+          echo $APP_ENV ; echo "$LAMBDA_VERSION" ; echo $ROLE 

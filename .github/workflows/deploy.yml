@@ -35,34 +35,56 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
 
+
   deploy_dev: 
-    strategy:
-      matrix:
-        env: [DEV, impl, prod]
-        dev: [9, 8, 7]
-        include: 
-          - env: DEV
-            dev: 9 
-          - env: impl 
-            dev: 8 
-          - env: prod 
-            dev: 7           
     needs: Server_Test
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: dev 
+      lambda_version: 9 
+
+  deploy_impl: 
+    needs: deploy_dev
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: impl 
+      lambda_version: 8 
+
+  deploy_prod: 
+    needs: deploy_impl
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: prod
+      lambda_version: 7 
+
+  # deploy_dev: 
+  #   strategy:
+  #     matrix:
+  #       env: [DEV, impl, prod]
+  #       dev: [9, 8, 7]
+  #       include: 
+  #         - env: DEV
+  #           dev: 9 
+  #         - env: impl 
+  #           dev: 8 
+  #         - env: prod 
+  #           dev: 7           
+  #   needs: Server_Test 
    
-    if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
-    # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
-    runs-on: ubuntu-latest
-    environment: ${{ matrix.env }}
-    env:
-      APP_ENV: ${{ matrix.env }}
-      dev: ${{ matrix.dev }}
-      ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
-    steps:
-      - name: Check out code
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - run: | 
-          echo $APP_ENV ; echo $dev ; echo $ROLE
+  #   if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
+  #   # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
+  #   runs-on: ubuntu-latest
+  #   environment: ${{ matrix.env }}
+  #   env:
+  #     APP_ENV: ${{ matrix.env }}
+  #     dev: ${{ matrix.dev }}
+  #     ROLE: ${{ secrets.AWS_ROLE_TO_ASSUME_DEV }}
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #     - run: | 
+  #         echo $APP_ENV ; echo $dev ; echo $ROLE
 
 
