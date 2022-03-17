@@ -8,8 +8,7 @@ on:
     branches:  
       - master 
 
-concurrency: 
-  group: deploy-${{ github.head.ref }}
+
 
 jobs:
 
@@ -46,7 +45,7 @@ jobs:
 
 
   deploy_dev: 
-    needs: Server_Test
+    needs: Server_Test 
     uses: ./.github/workflows/deployments.yml 
     with: 
       env: dev 
