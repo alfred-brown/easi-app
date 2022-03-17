@@ -28,4 +28,5 @@ jobs:
       - run: | 
           echo $APP_ENV ; 
           echo $LAMBDA_VERSION ; 
-          echo $ROLE 
+          echo $ROLE ; 
+          sleep 1m ;
