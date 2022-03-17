@@ -8,8 +8,16 @@ on:
     branches:  
       - master 
 
-
+concurrency: 
+  group: deploy-${{ github.head.ref }}
+  
 jobs:
+
+  REF: 
+    runs-on: ubuntu-latest 
+    steps: 
+      - name: Print Head 
+        
   Build: 
     uses: ./.github/workflows/initial_build.yml 
     secrets:
