@@ -12,6 +12,8 @@ env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
   DOCKER_BUILDKIT: 1
  
+concurrency: 
+  group: build-and-test-${{ github.head.ref }}
 
 jobs:
   Build:
