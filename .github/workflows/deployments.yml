@@ -33,7 +33,7 @@ jobs:
         run: | 
           echo "IM Dev"
       - name: Do for Impl and Prod 
-        if: contains(inputs.env, 'impl')
+        if: contains(inputs.env, 'impl') || contains(inputs.env, 'prod')
         run: | 
           echo "IM IMPL or Prod"
       - run: | 
