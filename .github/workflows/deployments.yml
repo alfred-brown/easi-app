@@ -29,11 +29,11 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Do for Dev 
-        if: ${{ inputs.env == 'dev' }}
+        if: contains(inputs.env, 'dev')
         run: | 
           echo "IM Dev"
       - name: Do for Impl and Prod 
-        if: ${{ inputs.env == 'impl' }} || ${{inputs.env == 'prod' }}
+        if: contains(inputs.env, 'impl')
         run: | 
           echo "IM IMPL or Prod"
       - run: | 
