@@ -16,8 +16,10 @@ jobs:
     runs-on: ubuntu-latest 
     steps: 
       - name: Print Head 
+        env:
+          HEAD: ${{ github.head.ref }}
         run: | 
-          echo ${{ github.head.ref }}
+          echo ${{ HEAD }}
         
   Build: 
     uses: ./.github/workflows/initial_build.yml 

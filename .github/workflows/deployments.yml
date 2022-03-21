@@ -27,6 +27,13 @@ jobs:
         uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Do for Dev 
+        if: ${{ inputs.env == 'dev' }}
+        run: | 
+          echo "IM Dev"
+      - name: Do for Impl and Prod 
+        if: ${{ inputs.env == 'impl' }} || ${{inputs.env == 'prod' }}
       - run: | 
           echo $APP_ENV ; 
           echo $LAMBDA_VERSION ; 
