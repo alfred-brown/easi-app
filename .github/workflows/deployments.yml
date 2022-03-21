@@ -34,6 +34,8 @@ jobs:
           echo "IM Dev"
       - name: Do for Impl and Prod 
         if: ${{ inputs.env == 'impl' }} || ${{inputs.env == 'prod' }}
+        run: | 
+          echo "IM IMPL or Prod"
       - run: | 
           echo $APP_ENV ; 
           echo $LAMBDA_VERSION ; 
