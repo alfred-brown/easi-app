@@ -13,7 +13,7 @@ on:
 jobs: 
   deploy:  
     concurrency: 
-      group: deploy        
+      group: ${{ inputs.env }}       
     if: ${{ github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'deploy_dev') }}
     # needs: [ lint, client_test, server_test, e2e_tests, anti_virus ]
     runs-on: ubuntu-latest
