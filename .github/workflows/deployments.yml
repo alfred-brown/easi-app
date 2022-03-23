@@ -10,6 +10,9 @@ on:
         required: true
         type: string
 
+concurrency: 
+      group: ${{ github.env }}   
+
 jobs: 
   deploy:  
     concurrency: 
@@ -42,4 +45,3 @@ jobs:
           echo $ROLE ; 
           sleep 1m ;
 
-          
