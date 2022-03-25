@@ -1,0 +1,65 @@
+name: Man Deploy
+
+on: 
+  workflow_dispatch:
+    inputs:
+      env: 
+        required: true
+        default: 'dev'
+        type: choice 
+        options:
+        - dev
+        - impl 
+        - prod 
+
+
+jobs:
+        
+  Build: 
+    uses: ./.github/workflows/initial_build.yml 
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+  Server_Test: 
+    uses: ./.github/workflows/server_test.yml 
+    needs: Build
+
+  client_typecheck:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.3.4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+
+
+  deploy_dev: 
+    if: ${{ github.event.inputs.env == 'dev' }}
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: dev 
+      lambda_version: 9 
+
+  deploy_impl: 
+    if: ${{ github.event.inputs.env == 'dev' }}
+
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: impl 
+      lambda_version: 8 
+
+  deploy_prod: 
+    if: ${{ github.event.inputs.env == 'dev' }}
+ 
+    uses: ./.github/workflows/deployments.yml 
+    with: 
+      env: prod
+      lambda_version: 7 
+    
