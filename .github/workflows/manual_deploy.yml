@@ -42,22 +42,23 @@ jobs:
 
   deploy_dev: 
     if: ${{ github.event.inputs.env == 'dev' }}
+    needs: Server_Test
     uses: ./.github/workflows/deployments.yml 
     with: 
       env: dev 
       lambda_version: 9 
 
   deploy_impl: 
-    if: ${{ github.event.inputs.env == 'dev' }}
-
+    if: ${{ github.event.inputs.env == 'impl' }}
+    needs: Server_Test
     uses: ./.github/workflows/deployments.yml 
     with: 
       env: impl 
       lambda_version: 8 
 
   deploy_prod: 
-    if: ${{ github.event.inputs.env == 'dev' }}
- 
+    if: ${{ github.event.inputs.env == 'prod' }}
+    needs: Server_Test
     uses: ./.github/workflows/deployments.yml 
     with: 
       env: prod
