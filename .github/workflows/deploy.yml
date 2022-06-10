@@ -45,7 +45,7 @@ jobs:
       lambda_version: 9 
 
   deploy_impl: 
-    needs: deploy_dev
+    needs: Server_Test
 
     uses: ./.github/workflows/deployments.yml 
     with: 
